@@ -234,10 +234,132 @@ export default App;
 ```
 
 
-#### Handling User Input with Forms
+#### Component in ReactNative
 ###### Forms in React Native are created using various input components like TextInput, Picker, and Switch. To handle user input:
 
 
 
+###### components > LittleLemonHeader.js
+```swift
+import { View, Text } from 'react-native';
+
+export default function Header() {
+  return (
+    <View style={{ flex: 0.15, backgroundColor: '#F4CE14' }}>
+      <Text
+        style={{
+          padding: 40,
+          fontSize: 30,
+          color: 'black',
+          textAlign: 'center',
+        }}>
+        HEADER
+      </Text>
+    </View>
+  );
+}
+
+```
+###### App.js
 
 ```swift
+import * as React from 'react';
+import { View } from 'react-native';
+
+import LittleLemonHeader from './components/Header';
+export default function App() {
+  return (
+    <>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: 'pink',
+        }}>
+        <LittleLemonHeader />
+      </View>
+     
+    </>
+  );
+}
+```
+
+#### View and Text Components
+###### The nested Text component inherits all the properties and styling from the parent Text component. 
+###### Notice that the number of visible lines have been set to 3 for the parent Text component. 
+###### 'Flex' means that the header component will occupy 30 percent of the total space on the screen.  
+
+
+```swift
+import * as React from 'react';
+import { View, Text } from 'react-native';
+
+export default function Header() {
+  return (
+
+    <View style={{ flex: 0.3, backgroundColor: 'pink' }}>
+      <Text
+        style={{ padding: 40, fontSize: 30, color: 'black' }}
+        numberOfLines={3}>
+        Welcome
+        <Text style={{ fontWeight: 'bold' }}> Little Lemon</Text>     {' '}
+      </Text>
+    </View>
+  );
+}
+
+```
+#### StyleSheet API
+
+###### component > MenuItems.js
+
+
+```swift
+import React from 'react';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
+
+const techMenuItemsToDisplay = [
+  'Smartphone \nLaptop \nSmartwatch \nGaming Console \nWireless Earbuds \nFitness Tracker \nVR Headset \nDrone \nRobot Vacuum \nBluetooth Speaker \nAction Camera \n3D Printer \nSmart Home Hub \nAugmented Reality Glasses \nFoldable Tablet \nPower Bank \nHigh-Performance Router \nSmart Refrigerator \nElectric Scooter \nAI-Powered Camera',
+];
+
+const TechMenuItems = () => {
+  return (
+    <View style={techMenuStyles.container}>
+      <ScrollView
+        horizontal={false}
+        indicatorStyle={'white'}
+        style={techMenuStyles.innerContainer}>
+        <Text style={techMenuStyles.headerText}>Tech Menu</Text>
+        <Text style={techMenuStyles.itemText}>{techMenuItemsToDisplay[0]}</Text>
+      </ScrollView>
+    </View>
+  );
+};
+
+const techMenuStyles = StyleSheet.create({
+  container: {
+    flex: 0.75,
+  },
+  innerContainer: {
+    paddingHorizontal: 40,
+    paddingVertical: 40,
+    backgroundColor: 'black',
+  },
+  headerText: {
+    color: 'white',
+    fontSize: 40,
+    flexWrap: 'wrap',
+  },
+  itemText: {
+    color: '#F4CE14',
+    fontSize: 36,
+  },
+});
+
+export default TechMenuItems;
+
+```
+
+
+
+
+
