@@ -5,22 +5,14 @@
   - [React Native Project Structure](#react-native-project-structure)
   - [Building User Interfaces with React Native Components](#building-user-interfaces-with-react-native-components)
   - [Styling in React Native](#styling-in-react-native)
-  - [Handling User Input with Forms](#handling-user-input-with-forms)
+  - [Component in ReactNative](#component-in-reactnative)
+  - [SectionList](#sectionlist)
+  - [Simple LoginPage UI](#simple-loginpage-ui)
+  - [Pressable Usage](#pressable-usage)
   - [Managing Navigation in React Native](#managing-navigation-in-react-native)
-  - [Debugging and Troubleshooting in React Native](#debugging-and-troubleshooting-in-react-native)
-  - [Deploying React Native Apps to iOS and Android](#deploying-react-native-apps-to-ios-and-android)
-
-- [React Native Fundamentals](#react-native-fundamentals)
-  - [Components in React Native](#components-in-react-native)
-  - [Props and State in React Native](#props-and-state-in-react-native)
-  - [Styling and Theming in React Native](#styling-and-theming-in-react-native)
-  - [Working with Lists and FlatList](#working-with-lists-and-flatlist)
-  - [Handling User Gestures and Touch Events](#handling-user-gestures-and-touch-events)
-  - [Using External Libraries and NPM Packages](#using-external-libraries-and-npm-packages)
-  - [Redux for State Management](#redux-for-state-management)
-  - [Async Operations and Redux Thunk](#async-operations-and-redux-thunk)
-  - [Authentication in React Native Apps](#authentication-in-react-native-apps)
-  - [Internationalization and Localization](#internationalization-and-localization)
+    - [Stack Navigation](#stack-navigation)
+    - [Tab Navigation](#tab-navigation)
+    - [Drawer Navigation](#drawer-navigation)
 
 
 ## React Native
@@ -53,7 +45,7 @@
 
 ###### Expo CLI (optional): Expo is a set of tools and services built around React Native, which can make the development process even easier.
 ###### You can install Expo CLI globally by running
-```swift
+```javascript
  npm install -g expo-cli.
 ```
 ###### Android Studio (for Android development): If you plan to develop for Android, you'll need to install Android Studio.
@@ -64,7 +56,7 @@
 ###### Now that your environment is set up, it's time to create your first React Native project. We'll use the react-native command-line tool to generate a new project.
 ###### Open your terminal and run the following command to create a new React Native project:
 
-```swift
+```javascript
 
 npx react-native init YourProjectName
 ```
@@ -73,14 +65,14 @@ npx react-native init YourProjectName
 
 ###### Once the project is created, navigate to its directory:
 
-```swift
+```javascript
 
 cd YourProjectName
 ```
 
 ###### To start your React Native app, run:
 
-```swift
+```javascript
 
 npx react-native run-android
 // or
@@ -240,7 +232,7 @@ export default App;
 
 
 ###### components > LittleLemonHeader.js
-```swift
+```javascript
 import { View, Text } from 'react-native';
 
 export default function Header() {
@@ -262,7 +254,7 @@ export default function Header() {
 ```
 ###### App.js
 
-```swift
+```javascript
 import * as React from 'react';
 import { View } from 'react-native';
 
@@ -289,7 +281,7 @@ export default function App() {
 ###### 'Flex' means that the header component will occupy 30 percent of the total space on the screen.  
 
 
-```swift
+```javascript
 import * as React from 'react';
 import { View, Text } from 'react-native';
 
@@ -313,7 +305,7 @@ export default function Header() {
 ###### component > MenuItems.js
 
 
-```swift
+```javascript
 import React from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 
@@ -358,6 +350,657 @@ const techMenuStyles = StyleSheet.create({
 export default TechMenuItems;
 
 ```
+
+#### SectionList 
+
+###### component > MenuItems.js
+
+
+```javascript
+
+
+import React from 'react';
+import { View, Text, StyleSheet, SectionList } from 'react-native';
+
+// Array of technological items grouped by categories
+const techItemsToDisplay = [
+  {
+    title: 'Smartphones',
+    data: ['iPhone 13', 'Samsung Galaxy S21', 'Google Pixel 6', 'OnePlus 9'],
+  },
+  {
+    title: 'Laptops',
+    data: ['MacBook Pro', 'Dell XPS 13', 'HP Spectre x360', 'Surface Laptop 4'],
+  },
+  {
+    title: 'Wearables',
+    data: ['Apple Watch Series 7', 'Samsung Galaxy Watch 4', 'Fitbit Charge 5'],
+  },
+  {
+    title: 'Smart Home',
+    data: ['Amazon Echo', 'Google Nest Hub', 'Philips Hue Lights', 'Ring Doorbell'],
+  },
+];
+
+// Component for rendering each item
+const TechItem = ({ name }) => (
+  <View style={techMenuStyles.innerContainer}>
+    <Text style={techMenuStyles.itemText}>{name}</Text>
+  </View>
+);
+
+// Component for rendering the separator between items
+const TechSeparator = () => <View style={techMenuStyles.separator} />;
+
+// Component for rendering the footer
+const TechFooter = () => (
+  <Text style={techMenuStyles.footerText}>© TechHub 2023. All Rights Reserved</Text>
+);
+
+// Main component for rendering the technology menu items
+const TechMenuItems = () => {
+  // Function to render each item
+  const renderItem = ({ item }) => <TechItem name={item} />;
+
+  // Function to render section headers
+  const renderSectionHeader = ({ section: { title } }) => (
+    <Text style={techMenuStyles.sectionHeader}>{title}</Text>
+  );
+
+  return (
+    <View style={techMenuStyles.container}>
+      {/* SectionList component to display the technology items */}
+      <SectionList
+        keyExtractor={(item, index) => item + index}
+        sections={techItemsToDisplay}
+        renderItem={renderItem}
+        renderSectionHeader={renderSectionHeader}
+        ListFooterComponent={TechFooter}
+        ItemSeparatorComponent={TechSeparator}
+      />
+    </View>
+  );
+};
+
+// Styles for the technology menu component
+const techMenuStyles = StyleSheet.create({
+  container: {
+    flex: 0.95,
+  },
+  innerContainer: {
+    paddingHorizontal: 40,
+    paddingVertical: 20,
+    backgroundColor: '#333333',
+  },
+  sectionHeader: {
+    backgroundColor: '#fbdabb',
+    color: '#333333',
+    fontSize: 34,
+    flexWrap: 'wrap',
+    textAlign: 'center',
+  },
+  itemText: {
+    color: '#F4CE14',
+    fontSize: 32,
+  },
+  separator: {
+    borderBottomWidth: 1,
+    borderColor: '#EDEFEE',
+  },
+  footerText: {
+    color: '#EDEFEE',
+    fontSize: 20,
+    flexWrap: 'wrap',
+    textAlign: 'center',
+  },
+});
+
+export default TechMenuItems;
+```
+
+#### Simple LoginPage UI 
+
+###### 
+
+
+```javascript
+
+import React, { useState } from 'react';
+import { ScrollView, Text, StyleSheet, TextInput, Pressable } from 'react-native';
+
+export default function RegisterScreen() {
+  const [name, onChangeName] = useState('');
+  const [email, onChangeEmail] = useState('');
+  const [password, onChangePassword] = useState('');
+
+  const handleRegister = () => {
+    // Burada kayıt işlemleri yapılabilir
+    console.log('Name:', name);
+    console.log('Email:', email);
+    console.log('Password:', password);
+    // Kayıt işlemleri burada yapılabilir
+  };
+
+  return (
+    <ScrollView style={styles.container}>
+      <Text style={styles.headerText}>Create an Account</Text>
+      <TextInput
+        style={styles.inputBox}
+        value={name}
+        onChangeText={onChangeName}
+        placeholder={'Name'}
+        keyboardType={'default'}
+      />
+      <TextInput
+        style={styles.inputBox}
+        value={email}
+        onChangeText={onChangeEmail}
+        placeholder={'Email'}
+        keyboardType={'email-address'}
+      />
+      <TextInput
+        style={styles.inputBox}
+        value={password}
+        onChangeText={onChangePassword}
+        placeholder={'Password'}
+        keyboardType={'default'}
+        secureTextEntry={true}
+      />
+      <Pressable style={styles.registerButton} onPress={handleRegister}>
+        <Text style={styles.buttonText}>Register</Text>
+      </Pressable>
+    </ScrollView>
+  );
+}
+
+// Styles for the technology menu component ...
+
+```
+
+#### Pressable Usage
+
+###### 
+
+
+```javascript
+
+
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, SectionList, Pressable } from 'react-native';
+
+const techItemsToDisplay = [
+  {
+    title: 'Smartphones',
+    data: ['iPhone 13', 'Samsung Galaxy S21', 'Google Pixel 6', 'OnePlus 9'],
+  },
+  {
+    title: 'Laptops',
+    data: ['MacBook Pro', 'Dell XPS 13', 'HP Spectre x360', 'Surface Laptop 4'],
+  },
+  {
+    title: 'Wearables',
+    data: ['Apple Watch Series 7', 'Samsung Galaxy Watch 4', 'Fitbit Charge 5'],
+  },
+  {
+    title: 'Smart Home',
+    data: ['Amazon Echo', 'Google Nest Hub', 'Philips Hue Lights', 'Ring Doorbell'],
+  },
+];
+
+const Separator = () => <View style={techMenuStyles.separator} />;
+
+const Footer = () => (
+  <Text style={techMenuStyles.footerText}>© TechHub 2023. All Rights Reserved</Text>
+);
+
+const TechItem = ({ name }) => (
+  <View style={techMenuStyles.innerContainer}>
+    <Text style={techMenuStyles.itemText}>{name}</Text>
+  </View>
+);
+
+const TechMenu = () => {
+  const [showMenu, setShowMenu] = useState(false);
+
+  const renderItem = ({ item }) => <TechItem name={item} />;
+
+  const renderSectionHeader = ({ section: { title } }) => (
+    <Text style={techMenuStyles.sectionHeader}>{title}</Text>
+  );
+
+  return (
+    <View style={techMenuStyles.container}>
+      {!showMenu && (
+        <Text style={techMenuStyles.infoSection}>
+          Explore the latest and greatest in technology with TechHub. View our
+          catalog of cutting-edge gadgets and devices!
+        </Text>
+      )}
+      <Pressable
+        style={techMenuStyles.button}
+        onPress={() => setShowMenu((prevState) => !prevState)}>
+        <Text style={techMenuStyles.buttonText}>
+          {showMenu ? 'Home' : 'View Tech Menu'}
+        </Text>
+      </Pressable>
+      {showMenu && (
+        <SectionList
+          keyExtractor={(item, index) => item + index}
+          sections={techItemsToDisplay}
+          renderItem={renderItem}
+          renderSectionHeader={renderSectionHeader}
+          ListFooterComponent={Footer}
+          ItemSeparatorComponent={Separator}></SectionList>
+      )}
+    </View>
+  );
+};
+// Styles for the technology menu component ...
+
+
+export default TechMenu;
+
+
+```
+
+#### Managing Navigation in React Native
+#### Stack Navigation
+
+
+###### Passing props to Screen
+
+
+
+###### screen > HomeScreen.js
+
+
+```javascript
+
+import React from 'react';
+import { View, Text, Button } from 'react-native';
+
+const HomeScreen = ({ navigation }) => {
+  // Using the `navigation` prop to navigate to the Details screen
+  const onPressHandler = () => {
+    navigation.navigate('Details', { message: 'Hello from HomeScreen!' });
+  };
+
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Home Screen</Text>
+      <Button title="Go to Details" onPress={onPressHandler} />
+    </View>
+  );
+};
+
+export default HomeScreen;
+
+
+```
+
+
+
+###### screen > DetailScreen.js
+
+
+```javascript
+
+import React from 'react';
+import { View, Text } from 'react-native';
+
+const DetailsScreen = ({ route }) => {
+  // Accessing and using parameters through the `route` prop
+  const { message } = route.params;
+
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Details Screen</Text>
+      <Text>{message}</Text>
+    </View>
+  );
+};
+
+export default DetailsScreen;
+
+
+```
+
+
+
+###### App.js
+
+
+```javascript
+
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import HomeScreen from './screens/HomeScreen';
+import DetailsScreen from './screens/DetailsScreen';
+
+const Stack = createNativeStackNavigator();
+
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+        />
+        {/* Defining parameters when navigating to the `DetailsScreen` */}
+        <Stack.Screen
+          name="Details"
+          component={DetailsScreen}
+          initialParams={{ message: 'Hello from initial params!' }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
+export default App;
+
+
+```
+
+#### Moving to a new screen through various methods
+
+###### Navigate Hook
+
+
+```javascript
+import { useNavigation } from '@react-navigation/native';
+
+const MyComponent = () => {
+  const navigation = useNavigation();
+
+  return (
+    <Button
+      title="Go to Details"
+      onPress={() => navigation.navigate('Details')}
+    />
+  );
+};
+
+```
+
+###### Navigation Prop
+
+
+```javascript
+import React from 'react';
+import { Button } from 'react-native';
+
+const MyComponent = ({ navigation }) => (
+  <Button
+    title="Go to Details"
+    onPress={() => navigation.navigate('Details')}
+  />
+);
+
+export default MyComponent;
+
+```
+
+
+###### withNavigation HOC
+
+
+```javascript
+import React from 'react';
+import { withNavigation } from '@react-navigation/compat';
+import { Button } from 'react-native';
+
+const MyComponent = ({ navigation }) => (
+  <Button
+    title="Go to Details"
+    onPress={() => navigation.navigate('Details')}
+  />
+);
+
+export default withNavigation(MyComponent);
+
+```
+
+###### Navigation Actions 
+
+
+```javascript
+import { CommonActions, useNavigation } from '@react-navigation/native';
+import { Pressable, Text } from 'react-native';
+
+const MyComponent = () => {
+  const navigation = useNavigation();
+
+  const handlePress = () => {
+    navigation.dispatch(CommonActions.navigate({ name: 'Details' }));
+  };
+
+  return (
+    <Pressable onPress={handlePress}>
+      <Text>Go to Details</Text>
+    </Pressable>
+  );
+};
+
+export default MyComponent;
+
+
+```
+
+#### Going Back to Previous Screen
+
+###### goBack
+
+
+```javascript
+import { useNavigation } from '@react-navigation/native';
+import { Button } from 'react-native';
+
+const DetailsScreen = () => {
+  const navigation = useNavigation();
+
+  const handleGoBack = () => {
+    navigation.goBack();
+  };
+
+  return (
+    <Button title="Go Back" onPress={handleGoBack} />
+  );
+};
+
+export default DetailsScreen;
+
+```
+
+###### navigation.navigate
+
+
+```javascript
+import { useNavigation } from '@react-navigation/native';
+import { Button } from 'react-native';
+
+const DetailsScreen = () => {
+  const navigation = useNavigation();
+
+  const handleGoBack = () => {
+    navigation.navigate('PreviousScreen'); // Önceki sayfanın adını buraya ekleyin
+  };
+
+  return (
+    <Button title="Go Back" onPress={handleGoBack} />
+  );
+};
+
+export default DetailsScreen;
+
+```
+
+
+###### CommonActions.goBack
+
+
+```javascript
+import { CommonActions, useNavigation } from '@react-navigation/native';
+import { Button } from 'react-native';
+
+const DetailsScreen = () => {
+  const navigation = useNavigation();
+
+  const handleGoBack = () => {
+    navigation.dispatch(CommonActions.goBack());
+  };
+
+  return (
+    <Button title="Go Back" onPress={handleGoBack} />
+  );
+};
+
+export default DetailsScreen;
+
+```
+
+#### Tab Navigation
+
+
+```javascript
+
+
+import React from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import HomeScreen from './HomeScreen';
+import ProfileScreen from './ProfileScreen';
+
+const Tab = createBottomTabNavigator();
+
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Tab.Navigator>
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Profile" component={ProfileScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+};
+
+export default App;
+
+```
+
+#### Tab Navigation Ionicons
+
+###### Configure Tab Nav
+
+
+```javascript
+
+import * as React from 'react';
+import { View, StyleSheet, Text } from 'react-native';
+import HomeScreen from './screens/HomeScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+const Tab = createBottomTabNavigator();
+
+/**
+ * The root component of the app, which sets up the navigation structure.
+ * It uses a bottom tab navigator with two tabs: 'Home' and 'Profile'.
+ */
+export default function App() {
+  return (
+    <NavigationContainer>
+      {/* Main container for the app */}
+      <View style={styles.container}>
+        {/* Bottom Tab Navigator */}
+        <Tab.Navigator
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ size, color }) => {
+              let iconName;
+
+              // Define the icon name based on the current tab's route name
+              if (route.name === 'Home') {
+                iconName = 'home-outline';
+              } else if (route.name === 'Profile') {
+                iconName = 'person-outline';
+              }
+
+              // Return the Ionicons component with the specified name, size, and color
+              return <Ionicons name={iconName} size={size} color={color} />;
+            },
+          })}
+          tabBarOptions={{
+            activeTintColor: 'tomato',
+            inactiveTintColor: 'gray',
+          }}>
+          {/* Home Screen Tab */}
+          <Tab.Screen name="Home" component={HomeScreen} />
+          {/* Profile Screen Tab */}
+          <Tab.Screen name="Profile" component={ProfileScreen} />
+        </Tab.Navigator>
+      </View>
+    </NavigationContainer>
+  );
+}
+
+// Styles for the components
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f0f0f0',
+  },
+});
+
+
+```
+
+#### Drawer Navigation
+
+
+```javascript
+
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import WelcomeScreen from './WelcomeScreen';
+import MenuScreen from './MenuScreen';
+
+const Drawer = createDrawerNavigator();
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Drawer.Navigator
+        useLegacyImplementation
+        screenOptions={{ drawerPosition: 'right' }}>
+        <Drawer.Screen name="Home" component={HomeScreen} />
+        <Drawer.Screen name="Settings" component={SettingsScreen} />
+        <Drawer.Screen name="Profile" component={ProfileScreen} />
+        <Drawer.Screen name="Favorites" component={FavoritesScreen} />
+        <Drawer.Screen name="About" component={AboutScreen} />
+        <Drawer.Screen name="Contact" component={ContactScreen} />
+      </Drawer.Navigator>
+    </NavigationContainer>
+  );
+}
+
+```
+
+#### 
+
+###### 
+
+
+```javascript
+
+```
+
+
+
 
 
 
